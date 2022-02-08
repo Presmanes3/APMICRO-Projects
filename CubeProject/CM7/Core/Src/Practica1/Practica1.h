@@ -28,8 +28,66 @@
 #define GPIOK_IDR   ( *((volatile uint32_t*)(GPIOK_BASE+0x10)))
 #define GPIOK_PUPDR ( *((volatile uint32_t*)(GPIOK_BASE+0x0C)))
 
-#define GPIO_MODE_OUTPUT (0b01)
+/**
+ * Create mask for K pins value
+ *
+ * Joystick pins:
+ * J-Center 	: PK2
+ * J-Down 		: PK3
+ * J-Left 		: PK4
+ * J-Right 		: PK5
+ * J-Up 		: PK6
+ *
+ * As GPIOI_MODER is divided into 15 groups of 2 bits and for "general output"
+ * a 01 value must be set:
+ *
+ * 15 14 13 12 11 10 09 08 07 06 05 04 03 02 01 00 > Group
+ * 01 01 01 01 xx xx xx xx xx xx xx xx xx xx xx xx > Binary
+ * | 5 | | 5 | | X | | X | | X | | X | | X | | X | > HEX
+ *
+ * */
+
 #define GPIO_I_MODE_VAL (0x55FFFFFF) // 0101 0101
+
+/**
+ * Create mask for K pins value
+ *
+ * Joystick pins:
+ * J-Center 	: PK2
+ * J-Down 		: PK3
+ * J-Left 		: PK4
+ * J-Right 		: PK5
+ * J-Up 		: PK6
+ *
+ * As GPIO_PUPDR is divided into 15 groups of 2 bits and for "pull-up"
+ * a 01 value must be set:
+ *
+ * 15 14 13 12 11 10 09 08 07 06 05 04 03 02 01 00 > Group
+ * xx xx xx xx xx xx xx xx 00 01 01 01 01 01 xx xx > Binary
+ * | X | | X | | X | | 0 | | 1 | | 5 | | 5 | | X | > HEX
+ *
+ * */
+#define GPIO_K_PUPDR_VAL (0x00001550)
+
+/**
+ * Create mask for K pins value
+ *
+ * Joystick pins:
+ * J-Center 	: PK2
+ * J-Down 		: PK3
+ * J-Left 		: PK4
+ * J-Right 		: PK5
+ * J-Up 		: PK6
+ *
+ * As GPIOK_MODER is divided into 15 groups of 2 bits and for "input"
+ * a 00 value must be set:
+ *
+ * 15 14 13 12 11 10 09 08 07 06 05 04 03 02 01 00 > Group
+ * 11 11 11 11 11 11 11 11 11 00 00 00 00 00 11 11 > Binary
+ * | F | | F | | F | | F | | C | | 0 | | 0 | | F | > HEX
+ *
+ * */
+#define GPIO_K_MODE_VAL (0xFFFFC00F)
 
 int test = 0;
 
@@ -44,21 +102,41 @@ void Practica1() {
 
 	// Ejercicio 1.3
 
-	GPIOI_ODR |= (1 << 15);
-	GPIOI_ODR |= (1 << 14);
-	GPIOI_ODR |= (1 << 13);
-	GPIOI_ODR |= (1 << 12);
+	for (uint8_t x = 0; x < 4; x++) {
+		GPIOI_ODR |= (1 << 15);
+		GPIOI_ODR |= (1 << 14);
+		GPIOI_ODR |= (1 << 13);
+		GPIOI_ODR |= (1 << 12);
 
-	HAL_Delay(1000);
+		HAL_Delay(250);
 
-	GPIOI_ODR &= ~(1 << 15);
-	GPIOI_ODR &= ~(1 << 14);
-	GPIOI_ODR &= ~(1 << 13);
-	GPIOI_ODR &= ~(1 << 12);
+		GPIOI_ODR &= ~(1 << 15);
+		GPIOI_ODR &= ~(1 << 14);
+		GPIOI_ODR &= ~(1 << 13);
+		GPIOI_ODR &= ~(1 << 12);
 
-// Ejercicio 1.4
+		HAL_Delay(250);
+	}
 
-// Ejercicio 1.5
+	// Ejercicio 1.4
+	GPIOK_PUPDR = GPIO_K_PUPDR_VAL;
+	GPIOK_MODER = GPIO_K_MODE_VAL;
+
+	// Ejercicio 1.5
+
+	while (1) {
+		GPIOI_ODR |= ((GPIOK_IDR >> 6) << 15);
+		GPIOI_ODR |= ((GPIOK_IDR >> 5) << 14);
+		GPIOI_ODR |= ((GPIOK_IDR >> 4) << 13);
+		GPIOI_ODR |= ((GPIOK_IDR >> 3) << 12);
+
+		HAL_Delay(1);
+
+		GPIOI_ODR &= ~(1 << 15);
+		GPIOI_ODR &= ~(1 << 14);
+		GPIOI_ODR &= ~(1 << 13);
+		GPIOI_ODR &= ~(1 << 12);
+	}
 }
 
 #endif /* SRC_PRACTICA1_PRACTICA1_H_ */

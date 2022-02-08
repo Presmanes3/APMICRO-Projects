@@ -1,4 +1,4 @@
-Practica1.h:36:6:void Practica1()	8	static
+Practica1.h:94:6:void Practica1()	16	static
 main.cpp:71:5:int main()	16	static
 main.cpp:147:6:void SystemClock_Config()	120	static
 main.cpp:205:6:void PeriphCommonClock_Config()	200	static
