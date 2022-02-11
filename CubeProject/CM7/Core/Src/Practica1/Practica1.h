@@ -2,7 +2,7 @@
  * Practica1.h
  *
  *  Created on: Feb 4, 2022
- *      Author: Javier Presmanes
+ *      Author: Javier Presmanes e Ivan Vivas Pastor
  */
 
 #ifndef SRC_PRACTICA1_PRACTICA1_H_
@@ -47,7 +47,7 @@
  *
  * */
 
-#define GPIO_I_MODE_VAL (0x55FFFFFF) // 0101 0101
+#define GPIO_I_MODE_VAL (0x55FFFFFF)
 
 /**
  * Create mask for K pins value
@@ -132,6 +132,7 @@ void Practica1() {
 
 		HAL_Delay(1);
 
+		// Reset vale
 		GPIOI_ODR &= ~(1 << 15);
 		GPIOI_ODR &= ~(1 << 14);
 		GPIOI_ODR &= ~(1 << 13);

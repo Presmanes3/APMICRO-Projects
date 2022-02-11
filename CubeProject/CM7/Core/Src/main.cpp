@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "Practica1/Practica1.h"
+#include "Practica2/Practica2.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -115,6 +116,7 @@ int main(void) {
 	if (timeout < 0) {
 		Error_Handler();
 	}
+
 	/* USER CODE END Boot_Mode_Sequence_2 */
 
 	/* USER CODE BEGIN SysInit */
@@ -126,7 +128,10 @@ int main(void) {
 	MX_USART1_UART_Init();
 	/* USER CODE BEGIN 2 */
 
-	Practica1();
+	// ===== CORREGIDA =====
+//	Practica1();
+	// =====================
+	Practica2();
 
 	/* USER CODE END 2 */
 
