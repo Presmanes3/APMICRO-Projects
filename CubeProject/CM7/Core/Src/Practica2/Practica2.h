@@ -34,7 +34,11 @@ void Practica2() {
 	RCC->APB2ENR |= UART1_EN;
 
 	// Ejercicio 2.2
-	RCC->APB4ENR |= APB4ENR_HSE_EN;
+	// Activate HSE clock
+	// Activate GPIO I
+	RCC->APB4ENR |= APB4ENR_HSE_EN | GPIO_I_EN;
+
+	GPIOI->MODER = GPIO_I_MODE_VAL;
 
 	GPIOA->MODER = 0xABFFFFFF;
 	GPIOA->MODER &= ~((0x01 << GPIOA_9_UART) | (0x01 << GPIOA_10_UART));
@@ -92,9 +96,7 @@ void Practica2() {
 }
 
 void configure_out_leds() {
-	RCC->AHB4ENR |= GPIO_I_EN;
 
-	GPIOI_MODER = GPIO_I_MODE_VAL;
 }
 
 void change_led_state(uint8_t pin, uint8_t mode) {

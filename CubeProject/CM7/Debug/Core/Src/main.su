@@ -1,10 +1,11 @@
 Practica1.h:94:6:void Practica1()	16	static
 Practica2.h:31:6:void Practica2()	56	static
-Practica2.h:94:6:void configure_out_leds()	4	static
-Practica2.h:100:6:void change_led_state(uint8_t, uint8_t)	24	static
-main.cpp:72:5:int main()	16	static
-main.cpp:152:6:void SystemClock_Config()	120	static
-main.cpp:210:6:void PeriphCommonClock_Config()	200	static
-main.cpp:235:13:void MX_USART1_UART_Init()	8	static
-main.cpp:278:13:void MX_GPIO_Init()	40	static
-main.cpp:304:6:void Error_Handler()	4	static,ignoring_inline_asm
+Practica2.h:98:6:void configure_out_leds()	4	static
+Practica2.h:102:6:void change_led_state(uint8_t, uint8_t)	24	static
+Practica3.h:24:6:void Practica3()	80	static
+main.cpp:73:5:int main()	16	static
+main.cpp:155:6:void SystemClock_Config()	120	static
+main.cpp:213:6:void PeriphCommonClock_Config()	200	static
+main.cpp:238:13:void MX_USART1_UART_Init()	8	static
+main.cpp:281:13:void MX_GPIO_Init()	40	static
+main.cpp:307:6:void Error_Handler()	4	static,ignoring_inline_asm
