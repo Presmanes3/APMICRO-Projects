@@ -37,7 +37,7 @@ void Practica2() {
 	// Activate HSE clock
 	// Activate GPIO I
 	RCC->APB4ENR |= APB4ENR_HSE_EN | GPIO_I_EN;
-
+//	RCC->APB4ENR |= GPIO_I_EN;
 	GPIOI->MODER = GPIO_I_MODE_VAL;
 
 	GPIOA->MODER = 0xABFFFFFF;
@@ -74,6 +74,12 @@ void Practica2() {
 // Configuramos los pines para salida
 
 	timeStart = HAL_GetTick();
+
+	// Turn off all leds
+	change_led_state(1, 0);
+	change_led_state(2, 0);
+	change_led_state(3, 0);
+	change_led_state(4, 0);
 
 	while (true) {
 		char *number;
@@ -127,7 +133,7 @@ void change_led_state(uint8_t pin, uint8_t mode) {
 		break;
 	}
 
-	if (mode == 1)
+	if (mode == 0)
 		GPIOI->ODR |= (1 << offset);
 	else
 		GPIOI->ODR &= ~(1 << offset);
