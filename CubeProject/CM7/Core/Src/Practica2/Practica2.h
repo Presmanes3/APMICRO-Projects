@@ -12,6 +12,8 @@
 #include "stm32h7xx_hal_uart.h"
 #include "../Practica1/Practica1.h"
 #include "stdlib.h"
+#include "string.h"
+#include "stdio.h"
 
 void change_led_state(uint8_t pin, uint8_t mode);
 void configure_out_leds();
@@ -27,6 +29,16 @@ extern UART_HandleTypeDef huart1;
 
 #define GPIOA_9_UART 18
 #define GPIOA_10_UART 20
+
+struct custom_char {
+		char *buff;
+		bool valid;
+};
+
+void recibir_cadena(custom_char *chr);
+void enviar_cadena(char *str, int size);
+
+custom_char received;
 
 void Practica2() {
 
@@ -51,23 +63,12 @@ void Practica2() {
 
 // Ejercicio 2.4
 
-	char str[13] = "Hola Mundo\r\n";
+	char str[14] = "Hola Mundo\r\n";
 
 	uint32_t timeStart = HAL_GetTick();
-	while (HAL_GetTick() - timeStart < 1000) {
-//	while (true) {
-
-		for (uint8_t x = 0; x < 11; x++) {
-			USART1->TDR = str[x];
-
-			bool byte_sent = 0;
-
-			do {
-				byte_sent = ((USART1->ISR >> 7) & 0x01);
-			} while (!byte_sent);
-		}
-
-	}
+//	while (HAL_GetTick() - timeStart < 1000) {
+//		enviar_cadena(str, 12);
+//	}
 
 // Ejercicio 2.5
 
@@ -81,22 +82,56 @@ void Practica2() {
 	change_led_state(3, 0);
 	change_led_state(4, 0);
 
-	while (true) {
-		char *number;
-		bool byte_received = 0;
-
-		do {
-			byte_received = ((USART1->ISR >> 5) & 0x01);
-		} while (!byte_received);
-
-		*number = USART1->RDR;
-
-		int number_int = atoi(number);
-
-		change_led_state(number_int, 1);
-	}
+//	while (true) {
+//		recibir_cadena();
+//	}
 
 // Ejercicio 2.6
+
+	char buff[128];
+
+	// Pedimos un numero
+	char *msg = "Porfavor, escriba un numero de menos de 3 cifras: ";
+	enviar_cadena(msg, strlen(msg));
+
+	// Esperamos a recibir el numero
+	do {
+		recibir_cadena(&received);
+	} while (!received.valid);
+
+	int first_number = atoi(received.buff);
+
+	// Escribimos el numero por pantalla
+	memset(buff, '\0', strlen(buff));
+	snprintf(buff, 128, "El primer numero es : %d\n ", first_number);
+
+	enviar_cadena(buff, strlen(buff));
+
+	// Pedimos otro numero
+	msg = "Porfavor, escriba un numero de menos de 3 cifras: ";
+	enviar_cadena(msg, strlen(msg));
+
+	// Esperamos a recibir el segundo numero
+	do {
+		recibir_cadena(&received);
+	} while (!received.valid);
+
+	int second_number = atoi(received.buff);
+
+	// Escribimos el numero por pantalla
+	memset(buff, '\0', strlen(buff));
+	snprintf(buff, 128, "El segundo numero es : %d\n ", second_number);
+
+	enviar_cadena(buff, strlen(buff));
+
+	int total = first_number + second_number;
+
+	// Escribimos el numero total por pantalla
+	memset(buff, '\0', strlen(buff));
+	snprintf(buff, 128, "La suma es : %d\n ", total);
+
+	enviar_cadena(buff, strlen(buff));
+
 //	HAL_UART_Init(&huart1);
 
 }
@@ -137,6 +172,47 @@ void change_led_state(uint8_t pin, uint8_t mode) {
 		GPIOI->ODR |= (1 << offset);
 	else
 		GPIOI->ODR &= ~(1 << offset);
+}
+
+void recibir_cadena(custom_char *chr) {
+
+	chr->valid = false;
+	memset(chr->buff, '\0', strlen(chr->buff));
+
+	uint8_t x = 0;
+
+	uint32_t start_time = HAL_GetTick();
+	while ((HAL_GetTick() - start_time < 10) && !chr->valid) {
+		while (((USART1->ISR >> 5) & 0x01)) {
+			chr->buff[x] = USART1->RDR;
+
+			if (chr->buff[x] == 0x0A) {
+				if (chr->buff[x - 1] == 0x0D)
+					chr->buff[x - 1] = '\0';
+				chr->buff[x] = '\0';
+				chr->valid = true;
+				break;
+			}
+			x++;
+		}
+
+	}
+}
+
+void enviar_cadena(char *str, int size) {
+
+	if (str[size - 1] != '\0')
+		str[size - 1] = (char) '\0';
+
+	for (uint8_t x = 0; x < size; x++) {
+		USART1->TDR = str[x];
+
+		bool byte_sent = 0;
+
+		do {
+			byte_sent = ((USART1->ISR >> 7) & 0x01);
+		} while (!byte_sent);
+	}
 
 }
 
