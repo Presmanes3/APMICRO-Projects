@@ -4,7 +4,8 @@ Practica2.h:139:6:void configure_out_leds()	4	static
 Practica2.h:143:6:void change_led_state(uint8_t, uint8_t)	24	static
 Practica2.h:177:6:void recibir_cadena(custom_char*)	32	static
 Practica2.h:202:6:void enviar_cadena(char*, int)	24	static
-main.cpp:73:5:int main()	16	static
+Practica3.h:46:6:void Practica3()	88	static
+main.cpp:74:5:int main()	16	static
 main.cpp:155:6:void SystemClock_Config()	120	static
 main.cpp:213:6:void PeriphCommonClock_Config()	200	static
 main.cpp:238:13:void MX_USART1_UART_Init()	8	static

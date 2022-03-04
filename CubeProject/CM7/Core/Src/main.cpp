@@ -20,6 +20,7 @@
 #include "main.h"
 #include "Practica1/Practica1.h"
 #include "Practica2/Practica2.h"
+#include "Practica3/Practica3.h"
 //#include "Practica3/Practica3.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -134,7 +135,7 @@ int main(void) {
 	// ===================== CORREGIDA
 //	Practica2();
 	// ===================== NO CORREGIDA
-//	Practica3();
+	Practica3();
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
