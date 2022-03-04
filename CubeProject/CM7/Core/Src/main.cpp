@@ -131,11 +131,10 @@ int main(void) {
 
 	// ===================== CORREGIDA
 //	Practica1();
-	// ===================== NO CORREGIDA
-	Practica2();
+	// ===================== CORREGIDA
+//	Practica2();
 	// ===================== NO CORREGIDA
 //	Practica3();
-
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
